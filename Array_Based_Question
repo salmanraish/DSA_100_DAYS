@@ -1,0 +1,524 @@
+1. Maximum and minimum of an array using minimum number of comparisons(GFG)
+        Input: arr[] = {3, 5, 4, 1, 9};
+        Output: Minimum element is: 1
+        Maximum element is: 9
+
+Code:- public class Leetcode {
+    public static void main(String[] args) {
+int [] arr = {3, 5, 4, 1, 9};
+        System.out.println("Minimum element is: " + minElement(arr));
+        System.out.println("Maximum element is:" + maxElement(arr));
+    }
+    public static int maxElement(int [] arr){
+        int max = Integer.MIN_VALUE;
+        for (int i = 0; i<arr.length; i++){
+            if(arr[i]>max){
+                max = arr[i];
+            }
+        }
+        return max;
+    }
+    public static int minElement(int [] arr){
+        int min = Integer.MAX_VALUE;
+        for (int i = 0; i<arr.length; i++){
+            if(arr[i]<min){
+                min = arr[i];
+            }
+        }
+        return min;
+    }
+}
+
+2. Array Reverse(GFG)
+    Input: arr[] = {4, 5, 1, 2};
+    Output: arr[] = {2,1,5,4};
+
+Code:- public class Leetcode {
+    public static void main(String[] args) {
+int [] arr = {4, 5, 1, 2};
+        reverseArray(arr);
+        System.out.println(Arrays.toString(arr));
+    }
+    public static void reverseArray(int [] arr){
+        // Using To POinter Approach
+        int i = 0;
+        int j = arr.length-1;
+        while (i<j){
+            if(arr[i]<arr[j]){
+                swap(arr,i,j);
+                i++;
+                j--;
+            }
+            if(arr[i]>arr[j]){
+                swap(arr,i,j);
+                i++;
+                j--;
+            }
+        }
+    }
+    public static void swap(int [] arr,int i,int j){
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+}
+
+3. Maximum Subarray(LeetCode)
+Given an integer array nums, find the subarraywith the largest sum, and return its sum.
+Input: nums = [-2,1,-3,4,-1,2,1,-5,4]
+Output: 6
+Explanation: The subarray [4,-1,2,1] has the largest sum 6.
+
+Code:- public class Leetcode {
+    public static void main(String[] args) {
+int [] nums = {-2,1,-3,4,-1,2,1,-5,4};
+        System.out.println(maxSum(nums));
+    }
+    public static int maxSum(int [] arr) {
+        // use Kadane's Algorithm
+        int maxSum = 0;
+        int currSum = 0;
+        for (int i = 0; i<arr.length; i++){
+            currSum += arr[i];
+            if(currSum>maxSum){
+                maxSum = currSum;
+            }
+            if(currSum<0){
+                currSum = 0;
+            }
+        }
+        return maxSum;
+    }
+}
+
+4. Contains Duplicate(LeetCode)
+Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.
+1.Input: nums = [1,2,3,1]
+Output: true
+2.Input: nums = [1,2,3,4]
+Output: false
+
+Code:- public class Leetcode {
+    public static void main(String[] args) {
+int [] nums = {1,2,3,4};
+        System.out.println(containDublicate(nums));
+    }
+    public static boolean containDublicate(int [] arr) {
+        Set<Integer> set = new HashSet<>();
+        for (int num:arr){
+            if(set.contains(num)){
+                return true;
+            }else{
+                set.add(num);
+            }
+        }
+        return false;
+    }
+}
+
+5. Search in Rotated Sorted Array(LeetCode)
+There is an integer array nums sorted in ascending order (with distinct values).
+
+Prior to being passed to your function, nums is possibly rotated at an unknown pivot index k (1 <= k < nums.length) such that the resulting array
+is [nums[k], nums[k+1], ..., nums[n-1], nums[0], nums[1], ..., nums[k-1]] (0-indexed). For example, [0,1,2,4,5,6,7] might be rotated at pivot index 3 and become [4,5,6,7,0,1,2].
+
+Given the array nums after the possible rotation and an integer target, return the index of target if it is in nums, or -1 if it is not in nums.
+
+You must write an algorithm with O(log n) runtime complexity.
+
+Example 1:
+Input: nums = [4,5,6,7,0,1,2], target = 0
+Output: 4
+
+Example 2:
+Input: nums = [4,5,6,7,0,1,2], target = 3
+Output: -1
+
+Example 3:
+Input: nums = [1], target = 0
+Output: -1
+
+Code:- public class Leetcode {
+    public static void main(String[] args) {
+int [] nums = {4,5,6,7,0,1,2};
+        System.out.println(SearchRotated(nums,0));
+    }
+    public static int SearchRotated(int [] arr,int target) {
+        int start = 0;
+        int end = arr.length - 1;
+        while (start <= end) {
+            int mid = start + (end - start) / 2;
+            if (arr[mid] == target) {
+                return mid; // Return index where the target is found
+            }
+            if (arr[start] <= arr[mid]) {
+                if (arr[start] <= target && target < arr[mid]) {
+                    end = mid - 1;
+                } else {
+                    start = mid + 1;
+                }
+            } else {
+                if (arr[mid] < target && target <= arr[end]) {
+                    start = mid + 1;
+                } else {
+                    end = mid - 1;
+                }
+            }
+        }
+        return -1;
+    }
+}
+
+6. Best Time to Buy and Sell Stock(LeetCode)
+You are given an array prices where prices[i] is the price of a given stock on the ith day.
+
+You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
+
+Return the maximum profit you can achieve from this transaction. If you cannot achieve any profit, return 0.
+
+Example 1:
+Input: prices = [7,1,5,3,6,4]
+Output: 5
+Explanation: Buy on day 2 (price = 1) and sell on day 5 (price = 6), profit = 6-1 = 5.
+Note that buying on day 2 and selling on day 1 is not allowed because you must buy before you sell.
+
+Example 2:
+Input: prices = [7,6,4,3,1]
+Output: 0
+Explanation: In this case, no transactions are done and the max profit = 0.
+
+Code:- public class Leetcode {
+    public static void main(String[] args) {
+int [] nums = {7,1,5,3,6,4};
+        System.out.println(Buy_Sell(nums));
+    }
+    public static int Buy_Sell(int [] arr) {
+        int Buy = arr[0];
+        int profit = 0;
+        for (int num: arr){
+            if(num<Buy){
+                Buy = num;
+            }
+            if(num-Buy>profit){
+                profit = num - Buy;
+            }
+        }
+        return profit;
+    }
+}
+
+7. Kth Largest Element in an Array(LeetCode)
+Given an integer array nums and an integer k, return the kth largest element in the array.
+
+Note that it is the kth largest element in the sorted order, not the kth distinct element.
+
+Can you solve it without sorting?
+
+Example 1:
+Input: nums = [3,2,1,5,6,4], k = 2
+Output: 5
+
+Example 2:
+Input: nums = [3,2,3,1,2,4,5,5,6], k = 4
+Output: 4
+
+Code:- public class Leetcode {
+    public static void main(String[] args) {
+int [] nums = {3,2,1,5,6,4};
+        System.out.println(KthElement(nums,2));
+    }
+    public static int KthElement(int [] arr,int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        for (int i = 0; i<k; i++){
+            pq.offer(arr[i]);
+        }
+        for (int i = k; i<arr.length; i++){
+            if(arr[i]>pq.peek()){
+                pq.poll();
+                pq.offer(arr[i]);
+            }
+        }
+        return pq.peek();
+    }
+}
+
+8. Trapping Rain Water(LeetCode)
+Given n non-negative integers representing an elevation map where the width of each bar is 1, compute how much water it can trap after raining.
+
+Example 1:
+Input: height = [0,1,0,2,1,0,1,3,2,1,2,1]
+Output: 6
+Explanation: The above elevation map (black section) is represented by array [0,1,0,2,1,0,1,3,2,1,2,1]. In this case, 6 units of rain water (blue section) are being trapped.
+
+Example 2:
+Input: height = [4,2,0,3,2,5]
+Output: 9
+
+Code:- public class Leetcode {
+    public static void main(String[] args) {
+int [] nums = {0,1,0,2,1,0,1,3,2,1,2,1};
+        System.out.println(KthElement(nums));
+    }
+    public static int KthElement(int [] height) {
+        int n = height.length;
+        int [] left = new int[n];
+        int [] right = new int[n];
+        left[0] = height[0];
+        for(int i = 1; i<n; i++){
+            left[i] = Math.max(left[i-1],height[i]);
+        }
+        right[n-1] = height[n-1];
+        for(int i = n-2; i>=0; i--){
+            right[i] = Math.max(right[i+1],height[i]);
+        }
+        int sum = 0;
+        for(int i = 0; i<n; i++){
+            sum+= (Math.min(left[i],right[i])-height[i]);
+        }
+        return sum;
+    }
+}
+
+9. Find if there is a pair with a given sum in the rotated sorted Array(GFG)
+Given an array arr[] of distinct elements size N that is sorted and then rotated around an unknown point, the task is to check if the array has a pair with a given sum X.
+
+Examples 1: 
+Input: arr[] = {11, 15, 6, 8, 9, 10}, X = 16
+Output: true
+Explanation: There is a pair (6, 10) with sum 16
+
+Examples 2:
+Input: arr[] = {11, 15, 26, 38, 9, 10}, X = 35
+Output: true
+Explanation: There is a pair (26, 9) with sum 35
+
+Examples 3:
+Input: arr[] = {11, 15, 26, 38, 9, 10}, X = 45
+Output: false
+Explanation: There is no pair with sum 45.
+
+Code:- public class Leetcode {
+    public static void main(String[] args) {
+int [] nums = {11, 15, 26, 38, 9, 10};
+        System.out.println(pairSum(nums,35));
+    }
+    public static boolean pairSum(int[] arr, int k) {
+        int sum = 0;
+        HashSet<Integer> set = new HashSet<>();
+        set.add(0);
+        for (int i = 0; i < arr.length; i++) {
+            sum += arr[i];
+            int rem = sum - k;
+            if (set.contains(rem)) {
+                return true;
+            }
+            set.add(sum);
+        }
+        return false;
+    }
+}
+
+10. Container With Most Water(LeetCode)
+You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]).
+
+Find two lines that together with the x-axis form a container, such that the container contains the most water.
+
+Return the maximum amount of water a container can store.
+
+Notice that you may not slant the container.
+
+Example 1:
+Input: height = [1,8,6,2,5,4,8,3,7]
+Output: 49
+Explanation: The above vertical lines are represented by array [1,8,6,2,5,4,8,3,7]. In this case, the max area of water (blue section) the container can contain is 49.
+
+Example 2:
+Input: height = [1,1]
+Output: 1
+
+Code:- public class Leetcode {
+    public static void main(String[] args) {
+int [] nums = {1,8,6,2,5,4,8,3,7};
+        System.out.println(mostWater(nums));
+    }
+    public static int mostWater(int[] arr) {
+        // USING  TO POINTER APPROACH
+        int left = 0;
+        int right = arr.length-1;
+        int result = 0;
+        while (left<right){
+            result = Math.max(result,(right-left)*Math.min(arr[left],arr[right]));
+            if(arr[left]<arr[right]){
+                left++;
+            }else{
+                right--;
+            }
+        }
+        return result;
+    }
+}
+
+11. Kth smallest element(GFG)
+Given an array arr[] and an integer K where K is smaller than size of array, the task is to find the Kth smallest element in the given array. It is given that all array elements are distinct.
+
+Note :-  l and r denotes the starting and ending index of the array.
+
+Example 1:
+Input:
+N = 6
+arr[] = 7 10 4 3 20 15
+K = 3
+L=0 R=5
+Output : 7
+Explanation :
+3rd smallest element in the given 
+array is 7.
+
+Example 2:
+Input:
+N = 5
+arr[] = 7 10 4 20 15
+K = 4 L=0 R=4
+Output : 15
+Explanation :
+4th smallest element in the given 
+array is 15.
+
+Code:- public class Leetcode {
+    public static void main(String[] args) {
+int [] nums = {7,10,4,20,15};
+        System.out.println(KthSmallest(nums,4));
+    }
+    public static int KthSmallest(int[] arr,int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
+        for (int i = 0; i<k; i++){
+            pq.offer(arr[i]);
+        }
+        for (int i = k; i<arr.length; i++){
+            if(arr[i]<pq.peek()){
+                pq.poll();
+                pq.offer(arr[i]);
+            }
+        }
+        return pq.peek();
+    }
+}
+
+12.Arrange given numbers to form the biggest number(GFG)
+
+Example 1:
+input [] arr = {1, 34, 3, 98, 9, 76, 45, 4};
+output = 998764543431
+
+Example 2:
+input [] arr = {54, 546, 548, 60};
+output = 6054854654
+
+Code:- public class Leetcode {
+    public static void main(String[] args) {
+int [] nums = {1, 34, 3, 98, 9, 76, 45, 4};
+        System.out.println(BiggestNUm(nums));
+    }
+    public static String BiggestNUm(int[] arr) {
+        String[] str = new String[arr.length];
+        for (int i = 0; i < arr.length; i++) {
+            str[i] = String.valueOf(arr[i]);
+        }
+
+        Comparator<String> comparator = (a, b) -> (b + a).compareTo(a + b);
+
+        Arrays.sort(str, comparator);
+
+        StringBuilder sb = new StringBuilder();
+        for (String num : str) {
+            sb.append(num);
+        }
+
+        return sb.toString();
+    }
+}
+
+13. Maximum Product Subarray(LeetCode)
+Given an integer array nums, find a subarray that has the largest product, and return the product.
+
+The test cases are generated so that the answer will fit in a 32-bit integer.
+
+Example 1:
+Input: nums = [2,3,-2,4]
+Output: 6
+Explanation: [2,3] has the largest product 6.
+
+Example 2:
+Input: nums = [-2,0,-1]
+Output: 0
+Explanation: The result cannot be 2, because [-2,-1] is not a subarray.
+
+Code:- public class Leetcode {
+    public static void main(String[] args) {
+int [] nums = {2,3,-2,4};
+        System.out.println(maxProduct(nums));
+    }
+    public static int maxProduct(int[] arr) {
+        int max = arr[0];
+        int min = arr[0];
+        int result = arr[0];
+        for (int i = 1; i<arr.length; i++){
+            if(max == 0 || min == 0){
+                max = 1;
+                min = 1;
+            }
+            int temp1 = max * arr[i];
+            int temp2 = min * arr[i];
+            max = Math.max(temp1,temp2);
+            max = Math.max(max,arr[i]);
+            min = Math.max(temp1,temp2);
+            min = Math.max(min,arr[i]);
+            result = Math.max(result,max);
+        }
+        return result;
+    }
+}
+
+14. Find Minimum in Rotated Sorted Array(LeetCode)
+
+Suppose an array of length n sorted in ascending order is rotated between 1 and n times. For example, the array nums = [0,1,2,4,5,6,7] might become:
+
+[4,5,6,7,0,1,2] if it was rotated 4 times.
+[0,1,2,4,5,6,7] if it was rotated 7 times.
+Notice that rotating an array [a[0], a[1], a[2], ..., a[n-1]] 1 time results in the array [a[n-1], a[0], a[1], a[2], ..., a[n-2]].
+
+Given the sorted rotated array nums of unique elements, return the minimum element of this array.
+
+You must write an algorithm that runs in O(log n) time.
+
+Example 1:
+Input: nums = [3,4,5,1,2]
+Output: 1
+Explanation: The original array was [1,2,3,4,5] rotated 3 times.
+
+Example 2:
+Input: nums = [4,5,6,7,0,1,2]
+Output: 0
+Explanation: The original array was [0,1,2,4,5,6,7] and it was rotated 4 times.
+
+Example 3:
+Input: nums = [11,13,15,17]
+Output: 11
+Explanation: The original array was [11,13,15,17] and it was rotated 4 times.
+
+Code:- public class Leetcode {
+    public static void main(String[] args) {
+int [] nums = {4,5,6,7,0,1,2};
+        System.out.println(maxProduct(nums));
+    }
+    public static int maxProduct(int[] nums) {
+        Arrays.sort(nums);
+        int min = Integer.MAX_VALUE;
+        for (int num:nums){
+            if(num<min){
+                min = num;
+            }
+        }
+        return min;
+    }
+}
